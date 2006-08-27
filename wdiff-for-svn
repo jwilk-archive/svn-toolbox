@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+while (defined ($_ = shift @ARGV))
+{
+  next if $_ eq '-u';
+  shift, next if $_ eq '-L';
+  push @_, $_;
+}
+exec {'/usr/bin/wdiff'} '/usr/bin/wdiff', @_;
+
+# vim:ts=2 sw=2 et
