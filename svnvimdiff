@@ -1,0 +1,15 @@
+#!/bin/sh
+for file in "$@"
+do
+  dir=`dirname -- "$file"`
+  base=`basename -- "$file"`
+  fileo="$dir/.svn/text-base/$base.svn-base"
+  if cmp -s -- "$file" "$fileo"
+  then
+    :
+  else
+    vim -d "$file" "$fileo"
+  fi
+done
+
+# vim:ts=2 sw=2 et
