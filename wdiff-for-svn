@@ -1,13 +1,23 @@
-#!/usr/bin/perl
-use strict;
-use warnings;
+#!/usr/bin/python
 
-while (defined ($_ = shift @ARGV))
-{
-  next if $_ eq '-u';
-  shift, next if $_ eq '-L';
-  push @_, $_;
-}
-exec {'/usr/bin/wdiff'} '/usr/bin/wdiff', @_;
+import os
+import sys
 
-# vim:ts=2 sw=2 et
+def parse_args(args):
+    args = iter(args)
+    args.next()
+    while True:
+        arg = args.next()
+        if arg == '-u':
+            continue
+        if arg == '-L':
+            args.next()
+            continue
+        yield arg
+
+executable = '/usr/bin/wdiff'
+new_args = [executable]
+new_args += parse_args(sys.argv)
+os.execv(executable, new_args)
+
+# vim:ts=4 sw=4 et
