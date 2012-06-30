@@ -1,15 +1,17 @@
 #!/bin/sh
+
 for file in "$@"
 do
-    dir=`dirname -- "$file"`
-    base=`basename -- "$file"`
-    fileo="$dir/.svn/text-base/$base.svn-base"
+    fileo=$(mktemp -t $(basename -- "$file").XXXXXXXX) || exit 1
+    svn cat -- "$file" > "$fileo"
+    chmod a-w "$fileo"
     if cmp -s -- "$file" "$fileo"
     then
         :
     else
         vim -d "$file" "$fileo"
     fi
+    rm -f "$fileo"
 done
 
 # vim:ts=4 sw=4 et
