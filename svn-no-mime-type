@@ -1,7 +1,7 @@
 #!/bin/sh
 tmpls=$(mktemp) || exit 1
 tmpmi=$(mktemp) || exit 1
-trap "rm -f -- $tmpls $tmpmi" EXIT
+trap 'rm -f -- "$tmpls" "$tmpmi"' EXIT
 svn ls -R | grep -E -v '/$' | sort > "$tmpls"
 svn pg -R svn:mime-type | sed -e 's/ - .*//' | sort > "$tmpmi"
 vimdiff "$tmpls" "$tmpmi"
